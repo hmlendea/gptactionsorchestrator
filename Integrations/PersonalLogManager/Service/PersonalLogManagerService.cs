@@ -27,7 +27,8 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             NuciApiRequestAuthorisationInfo authorisation = new()
             {
                 ClientId = securitySettings.ClientId,
-                BearerToken = plmSettings.ApiKey
+                BearerToken = plmSettings.ApiKey,
+                HmacSharedSecretKey = plmSettings.HmacSigningKey
             };
 
             NuciApiResponse response =
@@ -78,8 +79,6 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             {
                 request.Count = int.Parse(count);
             }
-
-            request.SignHMAC(plmSettings.HmacSigningKey);
 
             return request;
         }
