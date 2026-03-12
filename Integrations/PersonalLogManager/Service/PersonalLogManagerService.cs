@@ -5,18 +5,66 @@ using GptActionsOrchestrator.Configuration;
 using GptActionsOrchestrator.Integrations.PersonalLogManager.Client;
 using GptActionsOrchestrator.Integrations.PersonalLogManager.Configuration;
 using GptActionsOrchestrator.Integrations.PersonalLogManager.Service.Models;
+using GptActionsOrchestrator.Logging;
 using NuciAPI.Client;
 using NuciAPI.Responses;
+using NuciLog.Core;
 
 namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
 {
     public sealed class PersonalLogManagerService(
         PersonalLogManagerSettings plmSettings,
-        SecuritySettings securitySettings) : IPersonalLogManagerService
+        SecuritySettings securitySettings,
+        ILogger logger) : IPersonalLogManagerService
     {
         readonly NuciApiClient client = new(plmSettings.BaseUrl);
 
         public PersonalLogs GetPersonalLogs(
+            string date,
+            string time,
+            string template,
+            string localisation,
+            Dictionary<string, string> data,
+            string count)
+        {
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(MyLogInfoKey.Template, template),
+                new(MyLogInfoKey.Date, date),
+                new(MyLogInfoKey.Time, time),
+                new(MyLogInfoKey.Localisation, localisation),
+                new(MyLogInfoKey.Count, count)
+            ];
+
+            logger.Info(
+                MyOperation.GetPersonalLogs,
+                OperationStatus.Started,
+                logInfos);
+
+            try
+            {
+                PersonalLogs personalLogs = RetrievePersonalLogs(date, time, template, localisation, data, count);
+
+                logger.Debug(
+                    MyOperation.GetPersonalLogs,
+                    OperationStatus.Success,
+                    logInfos);
+
+                return personalLogs;
+            }
+            catch (Exception exception)
+            {
+                logger.Error(
+                    MyOperation.GetPersonalLogs,
+                    OperationStatus.Failure,
+                    exception,
+                    logInfos);
+
+                throw;
+            }
+        }
+
+        PersonalLogs RetrievePersonalLogs(
             string date,
             string time,
             string template,
@@ -43,7 +91,7 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
                 throw new Exception(response.Message);
             }
 
-            return new PersonalLogs()
+            return new()
             {
                 Logs = ((GetPersonalLogsResponse)response).Logs
             };
