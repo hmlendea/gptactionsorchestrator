@@ -5,39 +5,35 @@ using GptActionsOrchestrator.Models;
 using GptActionsOrchestrator.Requests;
 using GptActionsOrchestrator.Service;
 using NuciAPI.Responses;
-using GptActionsOrchestrator.Responses;
+using System.Linq;
 
 namespace GptActionsOrchestrator.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class ActionsController(
-        ISteamStoreService steamStoreService,
+        IActionsOrchestrator actionsOrchestrator,
         SecuritySettings securitySettings) : NuciApiController
     {
         readonly NuciApiAuthorisation authorisation = NuciApiAuthorisation.ApiKey(securitySettings.ApiKey);
 
         [HttpGet]
         public ActionResult Get([FromQuery] GetActionRequest request)
-            => ProcessGetRequest(request);
-
-        public ActionResult ProcessGetRequest(GetActionRequest request)
         {
             GptAction action = GptAction.FromString(request.GptActionName);
 
-            if (action.Equals(GptAction.GetSteamAppData))
+            if (action.Equals(GptAction.Unknown))
             {
-                return ProcessRequest(
-                    request,
-                    () => new GetActionResponse
-                    {
-                        GptActionName = request.GptActionName,
-                        Data = steamStoreService.GetAppData(Request.Query["appId"])
-                    },
-                    authorisation);
+                return BadRequest(new NuciApiErrorResponse($"The requested action is not valid."));
             }
 
-            return BadRequest(new NuciApiErrorResponse("Unsupported action."));
+            return ProcessRequest(
+                request,
+                () => actionsOrchestrator.Get(Request.Query.ToDictionary(
+                    pair => pair.Key,
+                    pair => pair.Value.ToString()
+                )),
+                authorisation);
         }
     }
 }

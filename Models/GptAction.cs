@@ -9,6 +9,7 @@ namespace GptActionsOrchestrator.Models
         static readonly Dictionary<string, GptAction> values = new()
         {
             { nameof(Unknown), new GptAction("unknown", nameof(Unknown)) },
+            { nameof(GetPersonalLogs), new GptAction("personallogmanager.logs.get", nameof(GetPersonalLogs)) },
             { nameof(GetSteamAppData), new GptAction("steam.store.app.get", nameof(GetSteamAppData)) }
         };
 
@@ -23,6 +24,7 @@ namespace GptActionsOrchestrator.Models
         }
 
         public static GptAction Unknown => values[nameof(Unknown)];
+        public static GptAction GetPersonalLogs => values[nameof(GetPersonalLogs)];
         public static GptAction GetSteamAppData => values[nameof(GetSteamAppData)];
 
         public static Array GetValues() => values.Values.ToArray();
