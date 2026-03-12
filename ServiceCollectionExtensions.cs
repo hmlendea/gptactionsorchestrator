@@ -28,7 +28,7 @@ namespace GptActionsOrchestrator
         }
 
         public static IServiceCollection AddCustomServices(this IServiceCollection services) => services
-            .AddSingleton<ILogger, NuciLogger>()
-            .AddSingleton<ITestService, RequestService>();
+            .AddSingleton<ISteamStoreService, SteamStoreService>()
+            .AddSingleton<ILogger, NuciLogger>();
     }
 }

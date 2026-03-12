@@ -1,13 +1,15 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
-using NuciAPI.Requests;
+using NuciAPI.Responses;
 
-namespace GptActionsOrchestrator.Requests
+namespace GptActionsOrchestrator.Responses
 {
-    public sealed class GetActionRequest : NuciApiRequest
+    public sealed class GetActionResponse : NuciApiSuccessResponse
     {
         [FromQuery(Name = "action")]
         [JsonPropertyName("action")]
         public string GptActionName { get; set; }
+
+        public object Data { get; set; }
     }
 }

@@ -6,6 +6,8 @@ namespace GptActionsOrchestrator.Logging
     {
         MyLogInfoKey(string name) : base(name) { }
 
-        public static LogInfoKey Action => new MyLogInfoKey(nameof(Action));
+        public static LogInfoKey GptAction => new MyLogInfoKey(nameof(GptAction));
+
+        public static LogInfoKey AppId => new MyLogInfoKey(nameof(AppId));
     }
 }
