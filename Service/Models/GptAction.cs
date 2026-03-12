@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace GptActionsOrchestrator.Service.Models
+{
+    public class GptAction : IEquatable<GptAction>
+    {
+        static readonly Dictionary<string, GptAction> values = new()
+        {
+            { nameof(Unknown), new GptAction("unknown", nameof(Unknown)) },
+            { nameof(GetPersonalLogs), new GptAction("personallogmanager.logs.get", nameof(GetPersonalLogs)) },
+            { nameof(GetSteamAppData), new GptAction("steam.store.app.get", nameof(GetSteamAppData)) }
+        };
+
+        public string Id { get; }
+
+        public string Name { get; }
+
+        GptAction(string id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public static GptAction Unknown => values[nameof(Unknown)];
+        public static GptAction GetPersonalLogs => values[nameof(GetPersonalLogs)];
+        public static GptAction GetSteamAppData => values[nameof(GetSteamAppData)];
+
+        public static Array GetValues() => values.Values.ToArray();
+
+        public bool Equals(GptAction other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((GptAction)obj);
+        }
+
+        public override int GetHashCode() => $"{nameof(GptAction)}:{Id}".GetHashCode();
+
+        public override string ToString() => Name;
+
+        public static GptAction FromString(string value)
+        {
+            if (values.ContainsKey(value))
+            {
+                return values[value];
+            }
+
+            if (values.Values.Any(v => v.Id == value))
+            {
+                return values.Values.First(v => v.Id == value);
+            }
+
+            return Unknown;
+        }
+
+        public static bool operator ==(GptAction current, GptAction other) => current.Equals(other);
+
+        public static bool operator !=(GptAction current, GptAction other) => !current.Equals(other);
+
+        public static implicit operator string(GptAction obj) => obj.Name;
+    }
+}
