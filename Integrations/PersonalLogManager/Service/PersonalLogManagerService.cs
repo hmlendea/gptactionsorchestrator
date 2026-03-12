@@ -45,7 +45,7 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             {
                 PersonalLogs personalLogs = RetrievePersonalLogs(date, time, template, localisation, data, count);
 
-                logger.Info(
+                logger.Debug(
                     MyOperation.GetPersonalLogs,
                     OperationStatus.Success,
                     logInfos);
