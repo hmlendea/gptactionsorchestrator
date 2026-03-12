@@ -6,7 +6,7 @@ namespace GptActionsOrchestrator.Logging
     {
         MyOperation(string name) : base(name) { }
 
-        public static Operation PersonalLogRetrieval => new MyOperation(nameof(PersonalLogRetrieval));
+        public static Operation GetPersonalLogs => new MyOperation(nameof(GetPersonalLogs));
 
         public static Operation SteamStoreAppDataRetrieval => new MyOperation(nameof(SteamStoreAppDataRetrieval));
     }
