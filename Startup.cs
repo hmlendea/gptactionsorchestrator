@@ -34,10 +34,6 @@ namespace GptActionsOrchestrator
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
-
-            app.UseNuciApiHeaderValidation();
-            app.UseNuciApiReplayProtection();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
