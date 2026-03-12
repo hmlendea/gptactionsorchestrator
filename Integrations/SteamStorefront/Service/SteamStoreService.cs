@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using GptActionsOrchestrator.Integrations.SteamStorefront.Service.Models;
@@ -20,24 +22,42 @@ namespace GptActionsOrchestrator.Integrations.SteamStorefront.Service
         {
             const string namePattern = "\"name\": *\"([^\"]*)\"";
 
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(MyLogInfoKey.AppId, appId)
+            ];
+
             logger.Info(
                 MyOperation.SteamStoreAppDataRetrieval,
                 OperationStatus.Started,
-                new LogInfo(MyLogInfoKey.AppId, appId));
+                logInfos);
 
-            string endpoint = $"{StorefrontApiUrl}/appdetails?appids={appId}&cc={StorefrontApiCountry}&filters={StorefrontApiFilters}";
-            string responseContent = httpClient.GetStringAsync(endpoint).Result;
+            SteamAppEntity steamAppEntity = null;
 
-            SteamAppEntity steamAppEntity = new()
+            try
             {
-                Id = appId,
-                Name = Regex.Match(responseContent, namePattern).Groups[1].Value
-            };
+                string endpoint = $"{StorefrontApiUrl}/appdetails?appids={appId}&cc={StorefrontApiCountry}&filters={StorefrontApiFilters}";
+                string responseContent = httpClient.GetStringAsync(endpoint).Result;
+
+                steamAppEntity = new()
+                {
+                    Id = appId,
+                    Name = Regex.Match(responseContent, namePattern).Groups[1].Value
+                };
+            }
+            catch (Exception exception)
+            {
+                logger.Error(
+                    MyOperation.SteamStoreAppDataRetrieval,
+                    OperationStatus.Failure,
+                    exception,
+                    logInfos);
+            }
 
             logger.Debug(
                 MyOperation.SteamStoreAppDataRetrieval,
                 OperationStatus.Success,
-                new LogInfo(MyLogInfoKey.AppId, appId));
+                logInfos);
 
             return steamAppEntity;
         }
