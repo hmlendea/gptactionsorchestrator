@@ -5,5 +5,7 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Configuration
         public string BaseUrl { get; set; }
 
         public string ApiKey { get; set; }
+
+        public string HmacSigningKey { get; set; }
     }
 }

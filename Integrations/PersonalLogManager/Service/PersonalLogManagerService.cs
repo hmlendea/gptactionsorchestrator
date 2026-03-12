@@ -79,6 +79,8 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
                 request.Count = int.Parse(count);
             }
 
+            request.SignHMAC(plmSettings.HmacSigningKey);
+
             return request;
         }
     }
