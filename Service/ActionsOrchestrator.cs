@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using GptActionsOrchestrator.Api.Responses;
 using GptActionsOrchestrator.Integrations.PersonalLogManager.Service;
-using GptActionsOrchestrator.Models;
-using GptActionsOrchestrator.Responses;
+using GptActionsOrchestrator.Integrations.SteamStorefront.Service;
+using GptActionsOrchestrator.Service.Models;
 
 namespace GptActionsOrchestrator.Service
 {

@@ -1,11 +1,11 @@
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using GptActionsOrchestrator.Integrations.SteamStorefront.Service.Models;
 using GptActionsOrchestrator.Logging;
-using GptActionsOrchestrator.Service.Models;
 using NuciLog.Core;
 using NuciWeb.HTTP;
 
-namespace GptActionsOrchestrator.Service
+namespace GptActionsOrchestrator.Integrations.SteamStorefront.Service
 {
     public class SteamStoreService(ILogger logger) : ISteamStoreService
     {

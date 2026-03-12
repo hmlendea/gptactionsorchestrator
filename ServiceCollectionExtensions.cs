@@ -7,6 +7,7 @@ using GptActionsOrchestrator.Configuration;
 using GptActionsOrchestrator.Service;
 using GptActionsOrchestrator.Integrations.PersonalLogManager.Configuration;
 using GptActionsOrchestrator.Integrations.PersonalLogManager.Service;
+using GptActionsOrchestrator.Integrations.SteamStorefront.Service;
 
 namespace GptActionsOrchestrator
 {

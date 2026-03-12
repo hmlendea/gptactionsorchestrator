@@ -1,13 +1,13 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NuciAPI.Controllers;
-using GptActionsOrchestrator.Configuration;
-using GptActionsOrchestrator.Models;
-using GptActionsOrchestrator.Requests;
-using GptActionsOrchestrator.Service;
 using NuciAPI.Responses;
-using System.Linq;
+using GptActionsOrchestrator.Api.Requests;
+using GptActionsOrchestrator.Configuration;
+using GptActionsOrchestrator.Service;
+using GptActionsOrchestrator.Service.Models;
 
-namespace GptActionsOrchestrator.Controllers
+namespace GptActionsOrchestrator.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]

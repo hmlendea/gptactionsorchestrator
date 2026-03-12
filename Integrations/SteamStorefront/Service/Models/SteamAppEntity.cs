@@ -1,4 +1,4 @@
-namespace GptActionsOrchestrator.Service.Models
+namespace GptActionsOrchestrator.Integrations.SteamStorefront.Service.Models
 {
     public sealed class SteamAppEntity
     {

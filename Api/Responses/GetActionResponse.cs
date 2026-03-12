@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using NuciAPI.Responses;
 
-namespace GptActionsOrchestrator.Responses
+namespace GptActionsOrchestrator.Api.Responses
 {
     public sealed class GetActionResponse : NuciApiSuccessResponse
     {

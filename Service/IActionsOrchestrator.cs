@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GptActionsOrchestrator.Responses;
+using GptActionsOrchestrator.Api.Responses;
 
 namespace GptActionsOrchestrator.Service
 {
