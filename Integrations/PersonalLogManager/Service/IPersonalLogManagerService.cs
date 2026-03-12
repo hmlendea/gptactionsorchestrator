@@ -11,6 +11,6 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             string template,
             string localisation,
             Dictionary<string, string> data,
-            int count);
+            string count);
     }
 }

@@ -20,16 +20,16 @@ namespace GptActionsOrchestrator.Service
             if (action == GptAction.GetPersonalLogs)
             {
                 data = personalLogManagerService.GetPersonalLogs(
-                    (string)(parameters.TryGetValue("date", out object date) ? date : null),
-                    (string)(parameters.TryGetValue("time", out object time) ? time : null),
-                    (string)(parameters.TryGetValue("template", out object template) ? template : null),
-                    (string)(parameters.TryGetValue("localisation", out object localisation) ? localisation : null),
-                    (Dictionary<string, string>)(parameters.TryGetValue("data", out object dataDict) ? dataDict : null),
-                    int.Parse((string)(parameters.TryGetValue("count", out object count) ? count : "100")));
+                    GetParameter<string>(parameters, "date"),
+                    GetParameter<string>(parameters, "time"),
+                    GetParameter<string>(parameters, "template"),
+                    GetParameter<string>(parameters, "localisation"),
+                    GetParameter<Dictionary<string, string>>(parameters, "data"),
+                    GetParameter<string>(parameters, "count"));
             }
             else if (action == GptAction.GetSteamAppData)
             {
-                data = steamStoreService.GetAppData((string)(parameters.TryGetValue("appId", out object appId) ? appId : null));
+                data = steamStoreService.GetAppData(GetParameter<string>(parameters, "appId"));
             }
             else
             {
@@ -41,6 +41,16 @@ namespace GptActionsOrchestrator.Service
                 GptActionName = action.ToString(),
                 Data = data
             };
+        }
+
+        TObject GetParameter<TObject>(Dictionary<string, object> parameters, string key)
+        {
+            if (parameters.TryGetValue(key, out object value) && value is TObject typedValue)
+            {
+                return typedValue;
+            }
+
+            return default;
         }
 
         Dictionary<string, object> BuildParameters(Dictionary<string, string> rawParameters)

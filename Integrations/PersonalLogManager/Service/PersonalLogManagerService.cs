@@ -22,7 +22,7 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             string template,
             string localisation,
             Dictionary<string, string> data,
-            int count)
+            string count)
         {
             NuciApiRequestAuthorisationInfo authorisation = new()
             {
@@ -33,15 +33,7 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             NuciApiResponse response =
                 client.SendRequestAsync<GetPersonalLogsRequest, GetPersonalLogsResponse>(
                     HttpMethod.Get,
-                    new()
-                    {
-                        Date = date,
-                        Time = time,
-                        Template = template,
-                        Localisation = localisation,
-                        Data = data,
-                        Count = count
-                    },
+                    BuildRequest(date, time, template, localisation, data, count),
                     authorisation,
                     "PersonalLog").Result;
 
@@ -54,6 +46,40 @@ namespace GptActionsOrchestrator.Integrations.PersonalLogManager.Service
             {
                 Logs = ((GetPersonalLogsResponse)response).Logs
             };
+        }
+
+        GetPersonalLogsRequest BuildRequest(
+            string date,
+            string time,
+            string template,
+            string localisation,
+            Dictionary<string, string> data,
+            string count)
+        {
+            GetPersonalLogsRequest request = new()
+            {
+                Date = date,
+                Time = time,
+                Template = template,
+                Localisation = localisation,
+                Data = data
+            };
+
+            if (string.IsNullOrWhiteSpace(localisation))
+            {
+                request.Localisation = "ro";
+            }
+
+            if (string.IsNullOrWhiteSpace(count))
+            {
+                request.Count = 1000;
+            }
+            else
+            {
+                request.Count = int.Parse(count);
+            }
+
+            return request;
         }
     }
 }
